@@ -1,0 +1,32 @@
+{
+  "name": "graphql_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/server.js --exec babel-node --presets es2015,stage-2",
+    "build": "babel lib -d dist",
+    "serve": "node dist/index.js",
+    "test": "mocha --compilers js:babel-register"
+  },
+  "author": "diegosanteri",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.15.3",
+    "bcrypt": "^0.8.7",
+    "bcrypt-nodejs": "0.0.3",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.2",
+    "express-graphql": "^0.6.12",
+    "graphql": "^0.8.2",
+    "mongoose": "^4.7.8"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-stage-2": "^6.11.0",
+    "babel-register": "^6.11.6",
+    "mocha": "^3.0.1",
+    "nodemon": "^1.10.0"
+  }
+}
