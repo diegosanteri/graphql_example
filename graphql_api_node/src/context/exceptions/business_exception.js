@@ -1,9 +1,4 @@
-import { GraphQLError } from 'graphql';
-
-class ValidationError extends GraphQLError {
-  constructor(error) {
-    super(error);
-  }
+export default class BusinessException extends Error {
+  code = 422;
+  message = this.message || "Business error has hapened";
 }
-
-export default ValidationError;

@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import  mongoose from "mongoose";
+import mongoose from "mongoose";
 import Promise from "bluebird";
 import bcrypt from "bcrypt";
 
@@ -7,12 +7,15 @@ const Schema = mongoose.Schema;
 const bcryptPromisified = Promise.promisifyAll(bcrypt);
 
 const UserSchema = new Schema({
-  email: String,
-  password: String,
-  friends: [{ 
-    type: Schema.Types.ObjectId, 
-    ref: 'user'
-  }]
+    email: String,
+    password: String,
+    friends: [{
+        type: Schema.Types.ObjectId,
+        ref: 'user'
+    }],
+    roles: [{
+        type: String
+    }]
 });
 
 function autoPopulateSubs(next) {
@@ -21,22 +24,22 @@ function autoPopulateSubs(next) {
 }
 
 UserSchema.pre('findOne', autoPopulateSubs)
-          .pre('find', autoPopulateSubs);
+    .pre('find', autoPopulateSubs);
 
 UserSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-      return next();
-  }
+    if (!this.isModified("password")) {
+        return next();
+    }
 
-  try {
-      const hash = await bcryptPromisified.hashAsync(this.password, 10);
+    try {
+        const hash = await bcryptPromisified.hashAsync(this.password, 10);
 
-      this.password = hash;
-      next();
+        this.password = hash;
+        next();
 
-  } catch (err) {
-      next(err);
-  }
+    } catch (err) {
+        next(err);
+    }
 });
 
 UserSchema.methods.comparePassword = function comparePassword(candidatePassword) {

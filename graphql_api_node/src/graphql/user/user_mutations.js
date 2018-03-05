@@ -11,6 +11,7 @@ import {
 import userType from "./user_type";
 import userService from "./../../services/user_service";
 import authService from "./../../services/auth_service";
+import withAuth from 'graphql-auth';
 
 export default {
   register: {
@@ -38,7 +39,7 @@ export default {
         type: GraphQLString
       }
     },
-    resolve: userService.updateUser
+    resolve: withAuth(['user:write'], userService.updateUser)
   },
   deleteUser: {
     type: userType,
@@ -47,7 +48,7 @@ export default {
         type: new GraphQLNonNull(GraphQLID)
       }
     },
-    resolve: userService.deleteUser
+    resolve: withAuth(['user:delete'], userService.deleteUser)
   },
   addFriend: {
     type: userType,
@@ -59,6 +60,6 @@ export default {
         type: new GraphQLNonNull(GraphQLID)
       }
     },
-    resolve: userService.addFriend
+    resolve: withAuth(['user:write'], userService.addFriend)
   }
 };

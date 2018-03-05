@@ -37,8 +37,10 @@ class UserService {
 
             const instance = new UserModel({
                 ...args,
-                friends: []
+                friends: [],
+                roles: ["user:read", "user:write", "user:delete"]
             });
+
             return await instance.save();
         } catch (e) {
 
@@ -76,13 +78,14 @@ class UserService {
     async deleteUser(parent, args) {
         try {
             if (!await UserModel.findOne({ _id: args._id })) {
-
+                console.log(e)
                 throw new BusinessError("User doesn't exist");
             }
 
             await UserModel.remove({ _id: args._id });
             return args;
         } catch (e) {
+
 
             throw e;
         }
@@ -97,16 +100,18 @@ class UserService {
 
             const friend = await UserModel.findOne({ _id: args.friendId });
             if (!friend) {
-                
+
                 throw new BusinessError("Friend user doesn't exist");
             }
 
             await UserModel.update(
-                { _id: args._id, friends: {
-                  $ne: friend._id
-                }},
-                { 
-                    $push: { friends: friend  } 
+                {
+                    _id: args._id, friends: {
+                        $ne: friend._id
+                    }
+                },
+                {
+                    $push: { friends: friend }
                 });
 
             return {

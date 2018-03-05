@@ -1,12 +1,17 @@
 import UserModel from "./../models/user_model";
-import BusinessError from './../context/exceptions/business_exception'; 
+import BusinessError from './../context/exceptions/business_exception';
+import TokenManager from './../config/token_manager'
 
 class UserService {
 
+    constructor() {
+        this.tokenManager = new TokenManager();
+    }
+
     async checkToken(parent, args) {
 
-        if(args.token != "ABCDE") {
-            
+        if (!this.tokenManager.decodeToken(args.token)) {
+
             throw new BusinessError("Token is invalid");
         }
 
@@ -21,21 +26,25 @@ class UserService {
         return new Promise(async (resolve, reject) => {
 
             try {
-                const user = await UserModel.findOne({email: args.email});
-                if(!user) {
+                const user = await UserModel.findOne({ email: args.email });
+                if (!user) {
                     throw new BusinessError("Username or password is invalid");
                 }
 
-                if(!await user.comparePassword(args.password)) {
+                if (!await user.comparePassword(args.password)) {
 
                     throw new BusinessError("Username or password is invalid");
                 }
 
                 return resolve({
                     valid: true,
-                    token: "ABCDE"
+                    token: this.tokenManager.encodeToken({
+                        scope: [
+                            ...user.roles
+                        ]
+                    })
                 });
-            } catch(e) {
+            } catch (e) {
 
                 reject(e);
             }
