@@ -1,4 +1,4 @@
-#GRAPHQL-API-NODE
+## GRAPHQL-API-NODE
 
 This project is a simple graphql implementation for nodejs using JWT as security mechanism.
 
