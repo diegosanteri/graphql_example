@@ -7,9 +7,10 @@ class UserService {
     async getAllUsers(parent, args) {
 
         try {
+            
             return await UserModel.find();
         } catch (e) {
-            console.log(e)
+
             throw new BusinessError("Something is wrong");
         }
     }
@@ -78,7 +79,7 @@ class UserService {
     async deleteUser(parent, args) {
         try {
             if (!await UserModel.findOne({ _id: args._id })) {
-                console.log(e)
+
                 throw new BusinessError("User doesn't exist");
             }
 
