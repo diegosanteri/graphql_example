@@ -18,7 +18,6 @@ class UserService {
     async getUser(parent, args) {
 
         try {
-
             const users = await UserModel.findOne({ ...args });
             return users;
         } catch (e) {

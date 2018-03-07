@@ -18,14 +18,6 @@ const UserSchema = new Schema({
     }]
 });
 
-function autoPopulateSubs(next) {
-    this.populate('friends');
-    next();
-}
-
-UserSchema.pre('findOne', autoPopulateSubs)
-    .pre('find', autoPopulateSubs);
-
 UserSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {
         return next();
