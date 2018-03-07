@@ -64,11 +64,7 @@ class UserService {
                 }
             }
 
-            await UserModel.update({ _id: args._id }, {
-                ...user
-            });
-
-            return args;
+            return await user.save();
         } catch (e) {
 
             throw e;
