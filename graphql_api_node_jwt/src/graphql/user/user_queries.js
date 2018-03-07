@@ -15,7 +15,7 @@ import withAuth from 'graphql-auth';
 export default {
   users: {
     type: new GraphQLList(userType),
-    resolve: user.getAllUsers
+    resolve: withAuth(['user:read'], user.getAllUsers)
   },
   userById: {
     type: userType,
@@ -24,7 +24,7 @@ export default {
         type: GraphQLID
       }
     },
-    resolve: user.getUser
+    resolve: withAuth(['user:read'], user.getUser)
   },
   userByEmail: {
     type: userType,
@@ -33,6 +33,6 @@ export default {
         type: GraphQLString
       }
     },
-    resolve: user.getUser
+    resolve: withAuth(['user:read'], user.getUser)
   }
 };

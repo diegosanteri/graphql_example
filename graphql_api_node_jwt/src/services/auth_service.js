@@ -1,7 +1,25 @@
 import UserModel from "./../models/user_model";
 import BusinessError from './../context/exceptions/business_exception';
+import TokenManager from './../config/token_manager'
 
 class UserService {
+
+    constructor() {
+        this.tokenManager = new TokenManager();
+    }
+
+    async checkToken(parent, args) {
+
+        if (!this.tokenManager.decodeToken(args.token)) {
+
+            throw new BusinessError("Token is invalid");
+        }
+
+        return {
+            ...args,
+            valid: true
+        }
+    }
 
     async doLogin(parent, args) {
 
@@ -20,7 +38,11 @@ class UserService {
 
                 return resolve({
                     valid: true,
-                    token: "ABCD"
+                    token: this.tokenManager.encodeToken({
+                        scope: [
+                            ...user.roles
+                        ]
+                    })
                 });
             } catch (e) {
 

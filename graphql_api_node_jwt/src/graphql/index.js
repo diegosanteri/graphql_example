@@ -4,6 +4,7 @@ import {
 } from "graphql";
 
 import userQueries from "./user/user_queries";
+import authQueries from "./auth/auth_queries";
 import userMutations from "./user/user_mutations";
 import authMutations from "./auth/auth_mutations";
 
@@ -11,7 +12,8 @@ let RootQuery = new GraphQLObjectType({
   name: "Query",
   description: "Realize Root Query",
   fields: () => ({
-    ...userQueries
+    ...userQueries,
+    ...authQueries
   })
 });
 
