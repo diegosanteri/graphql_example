@@ -2,6 +2,8 @@ import UserModel from "./../models/user_model";
 import BusinessError from './../context/exceptions/business_exception';
 import Promise from "bluebird";
 
+import jobService from "./job_service";
+
 class UserService {
 
     async getAllUsers(parent, args) {
@@ -18,8 +20,8 @@ class UserService {
     async getUser(parent, args) {
 
         try {
-            const users = await UserModel.findOne({ ...args });
-            return users;
+
+            return await UserModel.findOne({ ...args });
         } catch (e) {
 
             throw new BusinessError("Something is wrong");
@@ -62,6 +64,11 @@ class UserService {
                 if (await UserModel.findOne({ email: args.email })) {
                     throw new BusinessError("Email already exists");
                 }
+            }
+
+            if(args.job != null) {
+
+                user.job = args.job;
             }
 
             return await user.save();

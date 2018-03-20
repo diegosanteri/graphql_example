@@ -9,6 +9,10 @@ const bcryptPromisified = Promise.promisifyAll(bcrypt);
 const UserSchema = new Schema({
     email: String,
     password: String,
+    job: {
+        type: Schema.Types.ObjectId,
+        ref: 'job'
+    },
     friends: [{
         type: Schema.Types.ObjectId,
         ref: 'user'

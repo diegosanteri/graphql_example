@@ -10,8 +10,6 @@ import {
 
 import userType from "./user_type";
 import userService from "./../../services/user_service";
-import authService from "./../../services/auth_service";
-import withAuth from 'graphql-auth';
 
 export default {
   register: {
